@@ -10,7 +10,9 @@ import {
   lessonFor,
   progressPct,
   summaryRows,
+  reassurance,
   toggleNoticed,
+  whyNow,
 } from "./funnel";
 
 describe("toggleNoticed", () => {
@@ -35,8 +37,12 @@ describe("copy", () => {
   it("builds the done title with an Oxford-free 'and'", () => {
     expect(joinAnd(["A"])).toBe("A");
     expect(joinAnd(["A", "B", "C"])).toBe("A, B and C");
-    expect(doneTitle(["Mobility"])).toBe("You noticed changes in Mobility. The check shows how much they matter.");
-    expect(doneTitle([])).toBe("Now see where your pet really stands.");
+    const none = { reason: null, noticed: [] };
+    expect(doneTitle(["Mobility", "Hurt"], none)).toBe(
+      "You spotted changes in Mobility and Hurt. Now find out how much they’re affecting your pet.",
+    );
+    expect(doneTitle([], none)).toMatch(/^Your pet seems okay/);
+    expect(doneTitle([], { reason: "diagnosis", noticed: ["ok"] })).toMatch(/diagnosis/);
   });
   it("areas title and summary fall back when nothing was noticed", () => {
     expect(areasTitle(["Hunger", "Hurt"])).toBe("What you noticed falls under 2 of the 7 areas");
@@ -48,6 +54,13 @@ describe("copy", () => {
     expect(lessonFor("info1", { ...EMPTY_ANSWERS, reason: "older" }).kicker).toBe("About aging");
     expect(lessonFor("info2", { ...EMPTY_ANSWERS, feeling: "calm" }).title).toBe("A great place to start from.");
     expect(lessonFor("info2", EMPTY_ANSWERS).kicker).toBe("From our vets");
+  });
+  it("personalizes why-now and reassurance", () => {
+    expect(whyNow({ reason: "changes", duration: "months" })).toMatch(/for months/);
+    expect(whyNow({ reason: "changes", duration: "recent" })).toMatch(/caught early/);
+    expect(whyNow({ reason: "older", duration: null })).toMatch(/Aging/);
+    expect(reassurance("overwhelmed")).toMatch(/stop whenever/);
+    expect(reassurance(null)).toMatch(/two weeks/);
   });
   it("duration text", () => {
     expect(durationText("weeks")).toBe("the past few weeks");

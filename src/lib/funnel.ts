@@ -188,11 +188,55 @@ export function areasTitle(hits: Area[]): string {
     : "Here’s what vets pay attention to";
 }
 
-export function doneTitle(hits: Area[]): string {
-  return hits.length
-    ? `You noticed changes in ${joinAnd(hits)}. The check shows how much they matter.`
-    : "Now see where your pet really stands.";
+// ---- Hand-off screen ("done") ----
+// The quiz can spot changes but can't measure them. The page makes that gap
+// visible (an unscored "? / 70") and sells the check as the way to close it.
+// Scoring facts follow the HHHHHMM scale (Villalobos): 7 areas, 0–10 each,
+// 70 total, 35+ generally read as acceptable. Confirm against CodaPet's check.
+
+export function doneTitle(hits: Area[], a: Pick<Answers, "reason" | "noticed">): string {
+  if (hits.length) {
+    return `You spotted changes in ${joinAnd(hits)}. Now find out how much they’re affecting your pet.`;
+  }
+  if (a.reason === "diagnosis") return "Now find out how the diagnosis is affecting your pet day to day.";
+  return "Your pet seems okay. Get a score that shows it, while things are good.";
 }
+
+export const DONE_GAP =
+  "This quiz can spot changes. It can’t measure them. The quality of life check scores each of the 7 areas from 0 to 10, so you get a real number instead of a worry.";
+
+export function whyNow(a: Pick<Answers, "reason" | "duration">): string {
+  switch (a.reason) {
+    case "diagnosis":
+      return "After a diagnosis, a score today gives you and your vet a starting point to measure treatment and comfort against.";
+    case "older":
+      return "Aging happens slowly, which makes it easy to miss. A score today makes the next change easy to spot.";
+    case "prepared":
+      return "Scoring on a good day gives you a baseline. If things change later, you’ll see it right away.";
+    default:
+      return a.duration === "months"
+        ? "You’ve had this on your mind for months. A score shows whether it’s time to talk with your vet."
+        : "Changes are easiest to help with when they’re caught early. Scoring now gives you a starting point.";
+  }
+}
+
+const REASSURE: Record<Feeling, string> = {
+  worried: "Whatever the score, you’ll know exactly what to ask your vet.",
+  overwhelmed: "It’s one question at a time. You can stop whenever you need to.",
+  unsure: "It puts what you’re seeing next to what vets look for, so you’ll know what’s normal.",
+  calm: "You’ll have a clear record to compare with in two weeks.",
+};
+
+export function reassurance(f: Feeling | null): string {
+  return REASSURE[f ?? "calm"];
+}
+
+export const CHECK_GIVES = [
+  { t: "A 0–10 score for each area", d: "See which areas need help and which are fine." },
+  { t: "A total out of 70", d: "The number vets use to judge overall quality of life. 35 or more is generally considered acceptable." },
+  { t: "Clear answers for your vet", d: "Bring numbers to your next visit instead of “something seems off.”" },
+  { t: "A baseline for your 2-week re-check", d: "We’ll remind you, so you can see which way things are heading." },
+];
 
 export function summaryRows(hits: Area[]) {
   return [
@@ -213,11 +257,6 @@ export function loadingItems(d: Duration | null) {
   ];
 }
 
-export const WHY_CHECK = [
-  { t: "Know where things stand", d: "A score for each area turns a feeling into something you can see." },
-  { t: "Catch changes early", d: "Small changes are easier to help with when you spot them early." },
-  { t: "Walk into your vet visit prepared", d: "Bring clear answers instead of “something seems off.”" },
-];
 
 export function progressPct(step: Step): number {
   return Math.round((STEPS.indexOf(step) / (STEPS.length - 1)) * 100);

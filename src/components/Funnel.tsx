@@ -9,10 +9,13 @@ import {
   QOL_URL,
   QUESTIONS,
   STEPS,
-  WHY_CHECK,
   areasTitle,
   clampStep,
+  CHECK_GIVES,
+  DONE_GAP,
   doneTitle,
+  reassurance,
+  whyNow,
   focusAreas,
   isStep,
   lessonFor,
@@ -21,6 +24,7 @@ import {
   summaryRows,
   toggleNoticed,
   type Answers,
+  type Area,
   type Noticed,
   type Step,
 } from "@/lib/funnel";
@@ -471,38 +475,36 @@ export default function Funnel() {
                 {leadId || email ? "✓ Summary sent. One step left." : "One step left."}
               </span>
               <h2 ref={headingRef} tabIndex={-1} className="font-serif text-[26px] leading-[1.2] font-medium text-pretty outline-none">
-                {doneTitle(hits)}
+                {doneTitle(hits, answers)}
               </h2>
-              <p className="text-[15px] leading-normal text-body text-pretty">
-                Your summary shows what to watch. CodaPet’s quality of life check scores all 7 areas, so you’ll know
-                where your pet stands and won’t have to guess.
-              </p>
+              <p className="text-[15px] leading-normal text-body text-pretty">{DONE_GAP}</p>
             </div>
-            <div className="flex flex-col gap-3.5 rounded-[18px] border border-line bg-white p-4">
-              <span className="text-xs font-bold tracking-[1px] text-primary uppercase">Why take it today</span>
-              <ol className="flex flex-col gap-3.5">
-                {WHY_CHECK.map((w, i) => (
-                  <li key={w.t} className="flex items-start gap-3">
-                    <span className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-badge text-[13px] font-bold text-primary">
-                      {i + 1}
-                    </span>
-                    <div className="flex flex-col gap-px">
-                      <span className="text-[15px] font-bold">{w.t}</span>
-                      <span className="text-[13px] leading-[1.4] text-muted">{w.d}</span>
-                    </div>
-                  </li>
-                ))}
-              </ol>
+
+            <ScoreCard hits={hits} />
+
+            <div className="flex flex-col gap-2.5">
+              <span className="px-1 text-xs font-bold tracking-[1.2px] text-primary uppercase">What you’ll get</span>
+              <CheckCard rows={CHECK_GIVES.map((g) => ({ t: g.t, d: g.d }))} />
             </div>
-            <div className="mt-auto flex flex-col gap-2.5">
-              <span className="text-center text-[13px] font-bold text-body">5 minutes · Free · Designed with CodaPet vets</span>
+
+            <div className="flex flex-col gap-1.5 rounded-[18px] bg-tint p-4">
+              <span className="text-xs font-bold tracking-[1.2px] text-primary uppercase">Why today</span>
+              <p className="text-[15px] leading-normal text-ink text-pretty">{whyNow(answers)}</p>
+              <p className="text-[14px] leading-normal text-body text-pretty">{reassurance(answers.feeling)}</p>
+            </div>
+
+            {/* Stays in view while they scroll, so the next step is always one tap away. */}
+            <div className="sticky bottom-0 -mx-5 mt-auto flex flex-col gap-2 bg-gradient-to-t from-page from-75% to-transparent px-5 pt-5 pb-[max(16px,env(safe-area-inset-bottom))]">
               <a
                 href={qolHref}
                 onClick={startCheck}
-                className="flex h-14 items-center justify-center rounded-2xl bg-primary text-[17px] font-bold text-white no-underline transition-colors hover:bg-primary-hover hover:text-white"
+                className="flex h-14 items-center justify-center rounded-2xl bg-primary text-[17px] font-bold text-white no-underline shadow-[0_6px_18px_rgba(82,124,172,.35)] transition-colors hover:bg-primary-hover hover:text-white"
               >
-                Take the check now
+                Get my pet’s score
               </a>
+              <span className="text-center text-[13px] font-semibold text-body">
+                About 5 minutes · Free · Vet-designed
+              </span>
             </div>
           </Screen>
         )}
@@ -595,6 +597,39 @@ function OptionButton({
         {selected ? "✓" : ""}
       </span>
     </button>
+  );
+}
+
+function ScoreCard({ hits }: { hits: Area[] }) {
+  return (
+    <div className="flex flex-col gap-3.5 rounded-[18px] border border-line bg-white p-4">
+      <div className="flex items-end justify-between gap-3">
+        <div className="flex flex-col gap-0.5">
+          <span className="text-[15px] font-bold">Your pet’s quality of life score</span>
+          <span className="text-[13px] text-muted">
+            {hits.length ? `${hits.length} of 7 areas flagged` : "No areas flagged"} · 0 of 7 scored
+          </span>
+        </div>
+        <span className="flex-none font-serif text-[34px] leading-none text-ink" aria-label="Not scored yet, out of 70">
+          <span className="text-primary">?</span>
+          <span className="text-[20px] text-muted-2"> / 70</span>
+        </span>
+      </div>
+      <ul className="grid grid-cols-[max-content_1fr_auto] items-center gap-x-2.5 gap-y-2" aria-label="The 7 areas">
+        {AREAS.map((a) => {
+          const hit = hits.includes(a.name);
+          return (
+            <li key={a.name} className="contents">
+              <span className="text-[13px] font-bold">{a.name}</span>
+              <span className="h-2 rounded-full border border-dashed border-line bg-page" aria-hidden="true" />
+              <span className={`text-[12px] font-bold ${hit ? "rounded-full bg-pill px-2 py-0.5 text-pill-ink" : "text-disabled"}`}>
+                {hit ? "Change noticed" : "Not scored"}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }
 
