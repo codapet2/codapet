@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#efebe5;font-family:'Nunito Sans',sans-serif;color:#1f2f45;-webkit-font-smoothing:antialiased}a{color:#527cac}a:hover{color:#3b5f88}input::placeholder{color:#9aa3ae}button{font-family:inherit}</style>
+</helmet>
+
+<div style="max-width:1400px;margin:0 auto;padding:48px 32px 100px;box-sizing:border-box;display:flex;flex-direction:column;gap:44px">
+
+  <header style="display:flex;flex-direction:column;gap:14px;max-width:820px">
+    <img src="https://www.codapet.com/images/codapet-new-logo-wordmark.svg" alt="CodaPet" style="height:24px;align-self:flex-start">
+    <h1 style="margin:0;font-family:Lora,serif;font-weight:500;font-size:44px;line-height:1.1;letter-spacing:-0.4px">Quality of life quiz funnel</h1>
+    <p style="margin:0;font-size:18px;line-height:1.5;color:#4a5868;text-wrap:pretty">A short quiz, one question per screen, in the style of health-app onboarding. A small lesson follows each answer, the quiz builds a personal summary, then asks for email and hands off to CodaPet's existing check.</p>
+  </header>
+
+  <div style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+
+    <div data-screen-label="Prototype" style="width:390px;height:844px;flex:none;background:#faf8f5;border-radius:32px;overflow:hidden;box-shadow:0 10px 36px rgba(31,47,69,.16);display:flex;flex-direction:column">
+
+      <sc-if value="{{ showBar }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:14px;padding:18px 20px 14px;background:#faf8f5">
+          <button onClick="{{ back }}" style="border:0;background:none;font-size:24px;line-height:1;color:#6b7684;cursor:pointer;padding:0;width:20px">‹</button>
+          <div style="flex:1;height:6px;border-radius:3px;background:#e3ddd4;overflow:hidden"><div style="height:6px;border-radius:3px;background:#527cac;transition:width .35s ease;width:{{ pct }}%"></div></div>
+          <img src="https://www.codapet.com/images/codapet-icon.svg" alt="" style="height:20px">
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:1;display:flex;flex-direction:column">
+          <div style="height:330px;background:#e7e1d8 center 30%/cover no-repeat;background-image:url('https://www.codapet.com/_next/image?url=%2F_next%2Fstatic%2Fimmutable%2Fmedia%2Fwomen_and_cat.0gkrq6ggu0ckl.webp&amp;w=828&amp;q=75')"></div>
+          <div style="padding:26px 24px 0;display:flex;flex-direction:column;gap:12px">
+            <span style="font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#527cac">Free · 2 minutes</span>
+            <h2 style="margin:0;font-family:Lora,serif;font-weight:500;font-size:31px;line-height:1.16;letter-spacing:-.2px;text-wrap:pretty">Is your pet having more good days than bad?</h2>
+            <p style="margin:0;font-size:16px;line-height:1.5;color:#4a5868;text-wrap:pretty">Answer a few quick questions and learn what vets look for as pets age or get sick.</p>
+          </div>
+          <div style="margin-top:auto;padding:0 20px 26px;display:flex;flex-direction:column;gap:12px">
+            <button onClick="{{ next }}" style="height:56px;border:0;border-radius:16px;background:#527cac;color:#fff;font-size:17px;font-weight:700;cursor:pointer">Let's begin</button>
+            <span style="text-align:center;font-size:13px;color:#5a6776">Designed with CodaPet veterinarians</span>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isQ }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;display:flex;flex-direction:column;padding:14px 20px 24px;gap:22px">
+          <div style="display:flex;flex-direction:column;gap:8px;padding:0 4px">
+            <h2 style="margin:0;font-family:Lora,serif;font-weight:500;font-size:27px;line-height:1.2;text-wrap:pretty">{{ q.title }}</h2>
+            <p style="margin:0;font-size:15px;line-height:1.45;color:#5a6776">{{ q.sub }}</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ q.options }}" as="o" hint-placeholder-count="4">
+              <button onClick="{{ o.pick }}" style="display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;min-height:58px;padding:12px 16px;border-radius:14px;cursor:pointer;font-size:16px;font-weight:700;color:#1f2f45;background:{{ o.bg }};border:2px solid {{ o.border }};transition:background .15s,border-color .15s">
+                <span>{{ o.label }}</span>
+                <span style="flex:none;width:22px;height:22px;border-radius:{{ o.radius }};border:2px solid {{ o.border }};background:{{ o.dot }};color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center">{{ o.mark }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <sc-if value="{{ q.multi }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ next }}" style="margin-top:auto;height:56px;border:0;border-radius:16px;color:#fff;font-size:17px;font-weight:700;cursor:pointer;background:{{ q.nextBg }}">Continue</button>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isInfo }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;display:flex;flex-direction:column;padding:14px 20px 24px;gap:20px">
+          <div style="height:260px;border-radius:20px;background:#e7e1d8 center/cover no-repeat;background-image:{{ info.img }}"></div>
+          <div style="display:flex;flex-direction:column;gap:10px;padding:0 4px">
+            <span style="font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#527cac">{{ info.kicker }}</span>
+            <h2 style="margin:0;font-family:Lora,serif;font-weight:500;font-size:27px;line-height:1.2;text-wrap:pretty">{{ info.title }}</h2>
+            <p style="margin:0;font-size:16px;line-height:1.55;color:#4a5868;text-wrap:pretty">{{ info.body }}</p>
+          </div>
+          <button onClick="{{ next }}" style="margin-top:auto;height:56px;border:0;border-radius:16px;background:#527cac;color:#fff;font-size:17px;font-weight:700;cursor:pointer">Continue</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isAreas }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;display:flex;flex-direction:column;padding:14px 20px 24px;gap:18px">
+          <div style="display:flex;flex-direction:column;gap:8px;padding:0 4px">
+            <span style="font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#527cac">What vets look at</span>
+            <h2 style="margin:0;font-family:Lora,serif;font-weight:500;font-size:26px;line-height:1.2;text-wrap:pretty">{{ areasTitle }}</h2>
+            <p style="margin:0;font-size:15px;line-height:1.45;color:#5a6776;text-wrap:pretty">Vets look at 7 everyday areas. That way no single bad day decides the picture.</p>
+          </div>
+          <div style="background:#fff;border:1px solid #e3ddd4;border-radius:18px;padding:4px 16px">
+            <sc-for list="{{ areas }}" as="a" hint-placeholder-count="7">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:{{ a.line }}">
+                <div style="display:flex;flex-direction:column;gap:1px">
+                  <span style="font-size:15px;font-weight:700">{{ a.t }}</span>
+                  <span style="font-size:13px;color:#6b7684">{{ a.d }}</span>
+                </div>
+                <sc-if value="{{ a.hit }}" hint-placeholder-val="{{ false }}">
+                  <span style="flex:none;background:#fbeee2;color:#9a5a22;font-size:12px;font-weight:700;padding:4px 9px;border-radius:999px">You noticed</span>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <button onClick="{{ next }}" style="margin-top:auto;height:56px;border:0;border-radius:16px;background:#527cac;color:#fff;font-size:17px;font-weight:700;cursor:pointer">Continue</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 28px 60px;gap:26px">
+          <div style="display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center">
+            <span style="font-family:Lora,serif;font-size:56px;line-height:1;color:#527cac">{{ progress }}%</span>
+            <h2 style="margin:0;font-family:Lora,serif;font-weight:500;font-size:24px;line-height:1.25">Putting your summary together</h2>
+          </div>
+          <div style="height:8px;border-radius:4px;background:#e3ddd4;overflow:hidden"><div style="height:8px;border-radius:4px;background:#527cac;width:{{ progress }}%"></div></div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <sc-for list="{{ loadItems }}" as="it" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:12px;font-size:15px;font-weight:600;color:{{ it.color }}">
+                <span style="flex:none;width:22px;height:22px;border-radius:50%;background:{{ it.dot }};color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center">{{ it.mark }}</span>
+                <span>{{ it.t }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isEmail }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;display:flex;flex-direction:column;padding:14px 20px 24px;gap:18px">
+          <div style="display:flex;flex-direction:column;gap:8px;padding:0 4px">
+            <span style="font-size:13px;font-weight:700;color:#3f7a5c">✓ Your summary is ready</span>
+            <h2 style="margin:0;font-family:Lora,serif;font-weight:500;font-size:27px;line-height:1.2;text-wrap:pretty">Where should we send it?</h2>
+          </div>
+          <div style="background:#fff;border:1px solid #e3ddd4;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px">
+            <sc-for list="{{ summary }}" as="s" hint-placeholder-count="3">
+              <div style="display:flex;gap:12px;align-items:flex-start">
+                <span style="flex:none;width:22px;height:22px;border-radius:7px;background:#527cac;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>
+                <div style="display:flex;flex-direction:column;gap:1px"><span style="font-size:15px;font-weight:700">{{ s.t }}</span><span style="font-size:13px;line-height:1.4;color:#5a6776">{{ s.d }}</span></div>
+              </div>
+            </sc-for>
+          </div>
+          <input type="email" value="{{ email }}" onChange="{{ setEmail }}" placeholder="you@email.com" style="height:56px;border:1px solid #cfd6de;border-radius:14px;padding:0 16px;font-size:17px;font-family:inherit;color:#1f2f45;outline:none;background:#fff;width:100%;box-sizing:border-box">
+          <div style="margin-top:auto;display:flex;flex-direction:column;gap:10px">
+            <button onClick="{{ next }}" style="height:56px;border:0;border-radius:16px;background:#527cac;color:#fff;font-size:17px;font-weight:700;cursor:pointer">Send it &amp; start the check</button>
+            <sc-if value="{{ allowSkip }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ next }}" style="border:0;background:none;font-size:14px;color:#6b7684;text-decoration:underline;cursor:pointer">Skip for now</button>
+            </sc-if>
+            <span style="text-align:center;font-size:13px;line-height:1.45;color:#5a6776">Private. No calls, no spam. Unsubscribe anytime.</span>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;display:flex;flex-direction:column;padding:14px 20px 24px;gap:18px">
+          <div style="display:flex;flex-direction:column;gap:8px;padding:0 4px">
+            <span style="font-size:13px;font-weight:700;color:#3f7a5c">✓ Summary sent. One step left.</span>
+            <h2 style="margin:0;font-family:Lora,serif;font-weight:500;font-size:26px;line-height:1.2;text-wrap:pretty">{{ doneTitle }}</h2>
+            <p style="margin:0;font-size:15px;line-height:1.5;color:#4a5868;text-wrap:pretty">Your summary shows what to watch. CodaPet's quality of life check scores all 7 areas, so you'll know where your pet stands and won't have to guess.</p>
+          </div>
+          <div style="background:#fff;border:1px solid #e3ddd4;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:14px">
+            <span style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#527cac">Why take it today</span>
+            <sc-for list="{{ whyCheck }}" as="w" hint-placeholder-count="3">
+              <div style="display:flex;gap:12px;align-items:flex-start">
+                <span style="flex:none;width:24px;height:24px;border-radius:50%;background:#e6edf5;color:#527cac;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ w.n }}</span>
+                <div style="display:flex;flex-direction:column;gap:1px"><span style="font-size:15px;font-weight:700">{{ w.t }}</span><span style="font-size:13px;line-height:1.4;color:#5a6776">{{ w.d }}</span></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;display:flex;flex-direction:column;gap:10px">
+            <span style="text-align:center;font-size:13px;font-weight:700;color:#4a5868">5 minutes · Free · Designed with CodaPet vets</span>
+            <a href="https://www.codapet.com/quality-of-life-scale" target="_blank" style="height:56px;border-radius:16px;background:#527cac;color:#fff;font-size:17px;font-weight:700;display:flex;align-items:center;justify-content:center;text-decoration:none">Take the check now</a>
+            <button onClick="{{ restart }}" style="border:0;background:none;font-size:13px;color:#6b7684;cursor:pointer">Restart prototype</button>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <div style="flex:1;min-width:300px;max-width:720px;display:flex;flex-direction:column;gap:36px">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <span style="font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#527cac">Screens · click to jump</span>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <sc-for list="{{ screens }}" as="s" hint-placeholder-count="11">
+            <button onClick="{{ s.go }}" style="display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;align-items:start;text-align:left;padding:12px 14px;border-radius:12px;cursor:pointer;background:{{ s.bg }};border:1px solid {{ s.border }};color:#1f2f45">
+              <span style="font-family:Lora,serif;font-size:17px;color:#527cac">{{ s.n }}</span>
+              <span style="display:flex;flex-direction:column;gap:2px">
+                <span style="font-size:15px;font-weight:700">{{ s.label }}</span>
+                <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+                  <span style="font-size:13px;line-height:1.45;color:#5a6776;text-wrap:pretty">{{ s.note }}</span>
+                </sc-if>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div data-screen-label="Emails" style="display:flex;flex-direction:column;gap:12px">
+        <span style="font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#527cac">Follow-up emails</span>
+        <sc-for list="{{ emails }}" as="e" hint-placeholder-count="5">
+          <div style="background:#fff;border-radius:14px;box-shadow:0 1px 3px rgba(31,47,69,.1);padding:14px 16px;display:flex;flex-direction:column;gap:4px">
+            <span style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#6b7684">{{ e.when }}</span>
+            <span style="font-size:15px;font-weight:700;line-height:1.3">{{ e.subject }}</span>
+            <span style="font-size:14px;line-height:1.5;color:#4a5868;text-wrap:pretty">{{ e.body }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showNotes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;allowSkip&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { step: 0, reason: null, duration: null, noticed: [], feeling: null, progress: 0, email: '' };
+  componentWillUnmount() { clearInterval(this.timer); clearTimeout(this.adv); }
+  go(i) {
+    clearInterval(this.timer); clearTimeout(this.adv);
+    this.setState({ step: i, progress: 0 });
+    if (this.steps()[i] === 'loading') {
+      this.timer = setInterval(() => {
+        const p = Math.min(100, this.state.progress + 4);
+        this.setState({ progress: p });
+        if (p >= 100) { clearInterval(this.timer); this.adv = setTimeout(() => this.go(i + 1), 500); }
+      }, 90);
+    }
+  }
+  steps() { return ['intro', 'reason', 'info1', 'duration', 'noticed', 'areas', 'feeling', 'info2', 'loading', 'email', 'done']; }
+  renderVals() {
+    const S = this.state, steps = this.steps(), type = steps[S.step];
+    const img = f => `url('https://www.codapet.com/_next/image?url=%2F_next%2Fstatic%2Fimmutable%2Fmedia%2F${f}&w=828&q=75')`;
+    const next = () => this.go(Math.min(S.step + 1, steps.length - 1));
+    const single = (key, opts) => opts.map(([k, label]) => {
+      const on = S[key] === k;
+      return { label, bg: on ? '#eef2f7' : '#fff', border: on ? '#527cac' : '#e3ddd4', dot: on ? '#527cac' : '#fff', radius: '50%', mark: on ? '✓' : '',
+        pick: () => { this.setState({ [key]: k }); clearTimeout(this.adv); this.adv = setTimeout(next, 280); } };
+    });
+    const noticeOpts = [
+      ['play', 'Less interest in play or walks', 'Happiness'], ['eat', 'Eating less', 'Hunger'], ['drink', 'Drinking more or less', 'Hydration'],
+      ['move', 'Trouble with stairs or jumping', 'Mobility'], ['accidents', 'Accidents or trouble grooming', 'Hygiene'],
+      ['night', 'Restless, panting or hiding', 'Hurt'], ['ok', 'Nothing yet, they seem okay', null]
+    ];
+    const toggle = k => {
+      let n = S.noticed.includes(k) ? S.noticed.filter(x => x !== k) : [...S.noticed.filter(x => x !== 'ok'), k];
+      if (k === 'ok' && !S.noticed.includes('ok')) n = ['ok'];
+      this.setState({ noticed: n });
+    };
+    const Qs = {
+      reason: { title: 'What brings you here today?', sub: 'Pick the one that fits best.', options: single('reason', [
+        ['changes', 'I\u2019ve noticed some changes'], ['diagnosis', 'My pet has a diagnosis'], ['older', 'My pet is getting older'], ['prepared', 'I just want to be prepared']]) },
+      duration: { title: 'How long has this been on your mind?', sub: 'There\u2019s no right answer.', options: single('duration', [
+        ['recent', 'Just the past few days'], ['weeks', 'A few weeks'], ['months', 'A few months or more'], ['unsure', 'I\u2019m not sure']]) },
+      noticed: { title: 'Have you noticed any of these?', sub: 'Select all that apply.', multi: true, nextBg: S.noticed.length ? '#527cac' : '#a9bcd2',
+        options: noticeOpts.map(([k, label]) => { const on = S.noticed.includes(k);
+          return { label, bg: on ? '#eef2f7' : '#fff', border: on ? '#527cac' : '#e3ddd4', dot: on ? '#527cac' : '#fff', radius: '6px', mark: on ? '✓' : '', pick: () => toggle(k) }; }) },
+      feeling: { title: 'How are you feeling about it?', sub: 'It helps us choose what to send you.', options: single('feeling', [
+        ['worried', 'Worried'], ['overwhelmed', 'Overwhelmed'], ['unsure', 'Not sure what\u2019s normal'], ['calm', 'Calm, just checking in']]) }
+    };
+    const info1 = {
+      changes: ['Trust that feeling', 'You know your pet better than anyone.', 'Vets say small changes are often the earliest and most useful signs. They\u2019re worth noting before the days blur together.'],
+      diagnosis: ['After a diagnosis', 'Comfort matters as much as the condition.', 'With an illness, vets focus on how your pet feels day to day. That\u2019s exactly what a quality of life check looks at.'],
+      older: ['About aging', 'Aging is many small changes, not one.', 'That\u2019s why vets break it into everyday areas, so you can see which ones are shifting and which are fine.'],
+      prepared: ['Good thinking', 'Checking on a good day helps later.', 'A check while things are okay gives you a baseline, so any change is easier to spot.']
+    }[S.reason || 'changes'];
+    const info2 = {
+      worried: ['From our vets', 'Worry means you\u2019re paying attention.', 'You don\u2019t need all the answers today. Looking at one area at a time makes things clearer and less heavy.'],
+      overwhelmed: ['From our vets', 'Let\u2019s make it smaller.', 'One question, one area, one week at a time. That\u2019s all the check asks of you.'],
+      unsure: ['From our vets', 'Knowing what\u2019s normal is hard.', 'The check puts what you see next to what vets look for, so it\u2019s easier to tell ordinary aging from something more.'],
+      calm: ['From our vets', 'A great place to start from.', 'Checking in while you feel steady gives you a clear record to compare with later.']
+    }[S.feeling || 'worried'];
+    const hits = noticeOpts.filter(o => o[2] && S.noticed.includes(o[0])).map(o => o[2]);
+    const areaList = [['Hurt', 'Pain or discomfort'], ['Hunger', 'Eating enough'], ['Hydration', 'Drinking enough'], ['Hygiene', 'Staying clean'],
+      ['Happiness', 'Interest and joy'], ['Mobility', 'Getting around'], ['More good days', 'Than bad ones, overall']];
+    const durText = { recent: 'recent changes', weeks: 'the past few weeks', months: 'longer-term changes', unsure: 'what you\u2019ve noticed' }[S.duration] || 'what you\u2019ve noticed';
+    const loadItems = [['Matching your answers to the 7 areas', 30], [`Choosing tips for ${durText}`, 65], ['Preparing your summary', 95]]
+      .map(([t, at]) => { const d = S.progress >= at; return { t, mark: d ? '✓' : '', dot: d ? '#3f7a5c' : '#e3ddd4', color: d ? '#1f2f45' : '#8a939e' }; });
+    const focus = hits.length ? hits.join(', ') : 'All 7 areas';
+    const labels = {
+      intro: ['Welcome', 'One clear promise, one button. No form on the first screen.'],
+      reason: ['Why they\u2019re here', 'An easy first tap. It also decides which lesson comes next.'],
+      info1: ['Lesson 1', 'Changes with their answer. They learn something before any other ask.'],
+      duration: ['How long', 'Shapes the tips on the loading screen and in the first email.'],
+      noticed: ['What they\u2019ve noticed', 'Everyday signs, not the check\u2019s own questions.'],
+      areas: ['The 7 areas', 'Their picks light up the matching areas, so the check feels relevant to them.'],
+      feeling: ['How they feel', 'Sets the tone of the lesson and the emails.'],
+      info2: ['Lesson 2', 'Reassurance from our vets, matched to how they feel.'],
+      loading: ['Building the summary', 'A short pause that shows the summary is being made for them. It moves on by itself.'],
+      email: ['Email', 'Asked for last, in exchange for a summary they\u2019ve already built.'],
+      done: ['Hand off', 'Makes the case for the check: what they noticed, why it matters, and why today. Then sends them to CodaPet\u2019s existing check, unchanged.']
+    };
+    return {
+      showNotes: this.props.showNotes ?? true,
+      allowSkip: this.props.allowSkip ?? false,
+      showBar: type !== 'intro' && type !== 'loading',
+      pct: Math.round(S.step / (steps.length - 1) * 100),
+      back: () => this.go(Math.max(0, S.step - 1)),
+      next, restart: () => { this.setState({ reason: null, duration: null, noticed: [], feeling: null, email: '' }); this.go(0); },
+      isIntro: type === 'intro', isQ: !!Qs[type], q: Qs[type] || { options: [] },
+      isInfo: type === 'info1' || type === 'info2',
+      info: (() => { const d = type === 'info2' ? info2 : info1; return { kicker: d[0], title: d[1], body: d[2], img: type === 'info2' ? img('women_holding_dog.1vry454d02jt2.webp') : img('homepage_hero.0dlsaz5fn_fym.webp') }; })(),
+      isAreas: type === 'areas',
+      areasTitle: hits.length ? `What you noticed falls under ${hits.length} of the 7 areas` : 'Here\u2019s what vets pay attention to',
+      areas: areaList.map((a, i) => ({ t: a[0], d: a[1], hit: hits.includes(a[0]), line: i < areaList.length - 1 ? '1px solid #efeae3' : '0' })),
+      isLoading: type === 'loading', progress: S.progress, loadItems,
+      isEmail: type === 'email', email: S.email, setEmail: e => this.setState({ email: e.target.value }),
+      summary: [
+        { t: `Areas to watch: ${focus}`, d: 'What each one means and what to look for this week.' },
+        { t: 'Tips from CodaPet vets', d: 'Small ways to bring more comfort to your pet\u2019s day.' },
+        { t: 'A reminder in 2 weeks', d: 'Checking twice shows which way things are heading.' }
+      ],
+      isDone: type === 'done',
+      doneTitle: hits.length ? `You noticed changes in ${hits.length === 1 ? hits[0] : hits.slice(0, -1).join(', ') + ' and ' + hits[hits.length - 1]}. The check shows how much they matter.` : 'Now see where your pet really stands.',
+      whyCheck: [
+        { n: '1', t: 'Know where things stand', d: 'A score for each area turns a feeling into something you can see.' },
+        { n: '2', t: 'Catch changes early', d: 'Small changes are easier to help with when you spot them early.' },
+        { n: '3', t: 'Walk into your vet visit prepared', d: 'Bring clear answers instead of \u201Csomething seems off.\u201D' }
+      ],
+      screens: steps.map((k, i) => ({ n: String(i + 1).padStart(2, '0'), label: labels[k][0], note: labels[k][1],
+        bg: i === S.step ? '#fff' : 'transparent', border: i === S.step ? '#527cac' : '#ddd6cc', go: () => this.go(i) })),
+      emails: [
+        { when: 'Instantly', subject: 'Your summary: what to watch this week', body: 'Their focus areas explained in plain language, with one tip for each, plus a link to the quality of life check.' },
+        { when: '1 hour, if the check isn\u2019t done', subject: 'Your quality of life check is waiting', body: 'These questions can be hard. Take your time. The check is here whenever you\u2019re ready.' },
+        { when: 'Day 3', subject: 'Try the good day / hard day calendar', body: 'A simple habit vets recommend: mark each day as good or hard. After a week or two, you\u2019ll see the pattern.' },
+        { when: 'Day 7', subject: 'What vets mean by \u201Cmore good days than bad\u201D', body: 'How to read the balance, and a gentle note that a CodaPet vet is here if you\u2019d like to talk.' },
+        { when: 'Day 14', subject: 'How has your pet been these past two weeks?', body: 'Take the check again to see which way things are heading. It takes about 5 minutes.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

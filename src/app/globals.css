@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-nunito), "Nunito Sans", system-ui, sans-serif;
+  --font-serif: var(--font-lora), Lora, Georgia, serif;
+
+  --color-ink: #1f2f45;
+  --color-body: #4a5868;
+  --color-muted: #5a6776;
+  --color-muted-2: #6b7684;
+  --color-disabled: #8a939e;
+  --color-primary: #527cac;
+  --color-primary-hover: #3b5f88;
+  --color-primary-disabled: #a9bcd2;
+  --color-success: #3f7a5c;
+  --color-page: #faf8f5;
+  --color-line: #e3ddd4;
+  --color-divider: #efeae3;
+  --color-input: #cfd6de;
+  --color-tint: #eef2f7;
+  --color-badge: #e6edf5;
+  --color-pill: #fbeee2;
+  --color-pill-ink: #9a5a22;
+  --color-placeholder: #e7e1d8;
+}
+
+@layer base {
+  html {
+    background: #efebe5;
+  }
+
+  body {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: var(--color-primary);
+  }
+  a:hover {
+    color: var(--color-primary-hover);
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--color-primary) 45%, transparent);
+    outline-offset: 2px;
+  }
+}
