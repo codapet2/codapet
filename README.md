@@ -90,9 +90,10 @@ nightly cron retries it.
 
 ## Assets
 
-The images are served from codapet.com for now. To self-host on the funnel domain, run
-`npm run fetch-assets` (downloads into `public/images/`), then point `ASSETS` in `src/lib/funnel.ts` at
-`/images/...`.
+The welcome and lesson images are illustrations in `public/images/` (unDraw art, free for commercial
+use, recolored to the CodaPet palette). The small CodaPet icon in the top bar still loads from
+codapet.com. To use the original codapet.com photos instead, run `npm run fetch-assets` on a machine
+that can reach codapet.com, then point `ASSETS` in `src/lib/funnel.ts` at the downloaded files.
 
 ## Before launch
 
@@ -101,5 +102,5 @@ The images are served from codapet.com for now. To self-host on the funnel domai
 - [ ] The instant summary email is live in Reply
 - [ ] Replace the placeholder `/privacy` and `/terms` pages with approved copy
 - [ ] Apply the Supabase migration; set env vars in Vercel; set `CRON_SECRET`
-- [ ] Self-host the images (`npm run fetch-assets`)
+- [ ] Self-host the CodaPet icon (`npm run fetch-assets`); optionally swap illustrations for photos
 - [ ] Test Pixel + CAPI de-duplication with `META_TEST_EVENT_CODE` in Events Manager

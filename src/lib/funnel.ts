@@ -43,16 +43,15 @@ export const QOL_URL =
 
 export const CONSENT_TEXT = "Private. No calls, no spam. Unsubscribe anytime.";
 
-// Remote until `npm run fetch-assets` has been run on a machine that can reach codapet.com;
-// then swap to the local /images paths.
-const CDN = (f: string) =>
-  `https://www.codapet.com/_next/image?url=%2F_next%2Fstatic%2Fimmutable%2Fmedia%2F${f}&w=828&q=75`;
+// Illustrations are self-hosted in public/images (recolored unDraw art, free for
+// commercial use). The logo still loads from codapet.com; `npm run fetch-assets`
+// downloads it (and the original site photos, if you'd rather use those).
 export const ASSETS = {
   wordmark: "https://www.codapet.com/images/codapet-new-logo-wordmark.svg",
   icon: "https://www.codapet.com/images/codapet-icon.svg",
-  welcome: CDN("women_and_cat.0gkrq6ggu0ckl.webp"),
-  lesson1: CDN("homepage_hero.0dlsaz5fn_fym.webp"),
-  lesson2: CDN("women_holding_dog.1vry454d02jt2.webp"),
+  welcome: "/images/welcome.svg",
+  lesson1: "/images/lesson1.svg",
+  lesson2: "/images/lesson2.svg",
 };
 
 type Option<K extends string> = { value: K; label: string };

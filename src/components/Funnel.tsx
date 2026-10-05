@@ -276,9 +276,9 @@ export default function Funnel() {
           <div className="flex flex-1 flex-col">
             <div
               className="h-[330px] bg-placeholder bg-cover bg-no-repeat"
-              style={{ backgroundImage: `url('${ASSETS.welcome}')`, backgroundPosition: "center 30%" }}
+              style={{ backgroundImage: `url('${ASSETS.welcome}')`, backgroundPosition: "center" }}
               role="img"
-              aria-label="A woman holding her cat"
+              aria-label="Illustration of a woman kneeling to greet her dog"
             />
             <div className="flex flex-col gap-3 px-6 pt-[26px]">
               <Eyebrow>Free · 2 minutes</Eyebrow>
@@ -341,7 +341,7 @@ export default function Funnel() {
                 className="h-[260px] rounded-[20px] bg-placeholder bg-cover bg-center bg-no-repeat"
                 style={{ backgroundImage: `url('${l.image}')` }}
                 role="img"
-                aria-label={step === "info1" ? "A pet owner with their pet" : "A woman holding her dog"}
+                aria-label={step === "info1" ? "Illustration of a woman with her dog" : "Illustration of two veterinarians"}
               />
               <div className="flex flex-col gap-2.5 px-1">
                 <Eyebrow>{l.kicker}</Eyebrow>
