@@ -275,7 +275,7 @@ export default function Funnel() {
         {step === "intro" && (
           <div className="flex flex-1 flex-col">
             <div
-              className="h-[330px] bg-placeholder bg-cover bg-no-repeat"
+              className="h-[330px] bg-page bg-cover bg-no-repeat"
               style={{ backgroundImage: `url('${ASSETS.welcome}')`, backgroundPosition: "center" }}
               role="img"
               aria-label="Illustration of a woman kneeling to greet her dog"
@@ -338,7 +338,7 @@ export default function Funnel() {
           return (
             <Screen gap="gap-5">
               <div
-                className="h-[260px] rounded-[20px] bg-placeholder bg-cover bg-center bg-no-repeat"
+                className="h-[260px] bg-page bg-cover bg-center bg-no-repeat"
                 style={{ backgroundImage: `url('${l.image}')` }}
                 role="img"
                 aria-label={step === "info1" ? "Illustration of a woman with her dog" : "Illustration of two veterinarians"}

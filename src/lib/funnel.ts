@@ -43,15 +43,15 @@ export const QOL_URL =
 
 export const CONSENT_TEXT = "Private. No calls, no spam. Unsubscribe anytime.";
 
-// Illustrations are self-hosted in public/images (recolored unDraw art, free for
-// commercial use). The logo still loads from codapet.com; `npm run fetch-assets`
-// downloads it (and the original site photos, if you'd rather use those).
+// Watercolor illustrations in public/images, painted in the brand guide's palette
+// (forest, mauve, slate, sage, rose) with washed edges that fade into the page.
+// Regenerate with scripts/watercolor. The logo still loads from codapet.com.
 export const ASSETS = {
   wordmark: "https://www.codapet.com/images/codapet-new-logo-wordmark.svg",
   icon: "https://www.codapet.com/images/codapet-icon.svg",
-  welcome: "/images/welcome.svg",
-  lesson1: "/images/lesson1.svg",
-  lesson2: "/images/lesson2.svg",
+  welcome: "/images/welcome.jpg",
+  lesson1: "/images/lesson1.jpg",
+  lesson2: "/images/lesson2.jpg",
 };
 
 type Option<K extends string> = { value: K; label: string };

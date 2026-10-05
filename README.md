@@ -90,10 +90,10 @@ nightly cron retries it.
 
 ## Assets
 
-The welcome and lesson images are illustrations in `public/images/` (unDraw art, free for commercial
-use, recolored to the CodaPet palette). The small CodaPet icon in the top bar still loads from
-codapet.com. To use the original codapet.com photos instead, run `npm run fetch-assets` on a machine
-that can reach codapet.com, then point `ASSETS` in `src/lib/funnel.ts` at the downloaded files.
+The welcome and lesson images are watercolor illustrations in `public/images/`, painted in the palette
+and "washed edge" style from CodaPet's 2025 brand guide (see `scripts/watercolor/README.md`). Replace
+the three JPGs with brand-team watercolor art whenever it's ready; keep the same aspect ratios. The small
+CodaPet icon in the top bar still loads from codapet.com (`npm run fetch-assets` downloads it).
 
 ## Before launch
 
