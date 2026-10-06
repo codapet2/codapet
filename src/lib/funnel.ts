@@ -43,15 +43,16 @@ export const QOL_URL =
 
 export const CONSENT_TEXT = "Private. No calls, no spam. Unsubscribe anytime.";
 
-// CodaPet's brand watercolor illustrations (from the QOL Meta ad creatives),
-// self-hosted in public/images with their edges washed into the page color.
+// CodaPet's brand watercolor illustrations, self-hosted in public/images and
+// flattened onto the page color so their washed edges blend in.
 // The logo still loads from codapet.com.
 export const ASSETS = {
   wordmark: "https://www.codapet.com/images/codapet-new-logo-wordmark.svg",
   icon: "https://www.codapet.com/images/codapet-icon.svg",
-  welcome: "/images/welcome.jpg",
-  lesson1: "/images/lesson1.jpg",
-  lesson2: "/images/lesson2.jpg",
+  welcome: "/images/welcome.webp",
+  lesson1: "/images/lesson1.webp",
+  lesson2: "/images/lesson2.webp",
+  checklist: "/images/checklist.webp",
 };
 
 type Option<K extends string> = { value: K; label: string };

@@ -159,7 +159,7 @@ export default function Funnel() {
   // Preload lesson images so they don't pop in.
   useEffect(() => {
     if (!hydrated) return;
-    [ASSETS.lesson1, ASSETS.lesson2].forEach((src) => {
+    [ASSETS.lesson1, ASSETS.lesson2, ASSETS.checklist].forEach((src) => {
       const img = new Image();
       img.src = src;
     });
@@ -274,11 +274,14 @@ export default function Funnel() {
       <main className="flex flex-1 flex-col" key={step}>
         {step === "intro" && (
           <div className="flex flex-1 flex-col">
-            <div
-              className="h-[330px] bg-page bg-cover bg-no-repeat"
-              style={{ backgroundImage: `url('${ASSETS.welcome}')`, backgroundPosition: "center" }}
-              role="img"
-              aria-label="Watercolor of a woman cuddling her dog on the couch"
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={ASSETS.welcome}
+              alt="Watercolor of a woman cuddling her dog on the couch"
+              width={1080}
+              height={591}
+              fetchPriority="high"
+              className="block aspect-[1080/591] w-full bg-page object-cover"
             />
             <div className="flex flex-col gap-3 px-6 pt-[26px]">
               <Eyebrow>Free · 2 minutes</Eyebrow>
@@ -338,10 +341,10 @@ export default function Funnel() {
           return (
             <Screen gap="gap-5">
               <div
-                className="h-[260px] bg-page bg-cover bg-center bg-no-repeat"
+                className="h-[260px] bg-page bg-contain bg-center bg-no-repeat"
                 style={{ backgroundImage: `url('${l.image}')` }}
                 role="img"
-                aria-label={step === "info1" ? "Watercolor of a woman sitting with her senior golden retriever" : "Watercolor of a woman reading a checklist with her cat on her shoulder"}
+                aria-label={step === "info1" ? "Watercolor of a woman sitting with her dog at home" : "Watercolor of a veterinarian arriving at a family's front door"}
               />
               <div className="flex flex-col gap-2.5 px-1">
                 <Eyebrow>{l.kicker}</Eyebrow>
@@ -385,6 +388,8 @@ export default function Funnel() {
 
         {step === "loading" && (
           <div className="flex flex-1 flex-col justify-center gap-[26px] px-7 pb-[60px]" aria-live="polite">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={ASSETS.checklist} alt="" width={640} height={611} className="mx-auto h-[170px] w-auto" />
             <div className="flex flex-col items-center gap-2.5 text-center">
               <span className="font-serif text-[56px] leading-none text-primary">{progress}%</span>
               <h2 ref={headingRef} tabIndex={-1} className="font-serif text-2xl leading-[1.25] font-medium outline-none">
