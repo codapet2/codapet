@@ -90,10 +90,11 @@ nightly cron retries it.
 
 ## Assets
 
-The welcome and lesson images are watercolor illustrations in `public/images/`, painted in the palette
-and "washed edge" style from CodaPet's 2025 brand guide (see `scripts/watercolor/README.md`). Replace
-the three JPGs with brand-team watercolor art whenever it's ready; keep the same aspect ratios. The small
-CodaPet icon in the top bar still loads from codapet.com (`npm run fetch-assets` downloads it).
+The welcome and lesson images in `public/images/` are CodaPet's brand watercolor illustrations, taken from
+the QOL Meta ad creatives, with their dark backgrounds removed so the edges wash into the page color (the
+brand guide's "floating image with a washed edge"). Replace the three JPGs to change them; keep the aspect
+ratios (1560x1320 for the welcome hero, 1400x1040 for the lessons). The small CodaPet icon in the top bar
+still loads from codapet.com (`npm run fetch-assets` downloads it).
 
 ## Before launch
 

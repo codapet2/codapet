@@ -43,9 +43,9 @@ export const QOL_URL =
 
 export const CONSENT_TEXT = "Private. No calls, no spam. Unsubscribe anytime.";
 
-// Watercolor illustrations in public/images, painted in the brand guide's palette
-// (forest, mauve, slate, sage, rose) with washed edges that fade into the page.
-// Regenerate with scripts/watercolor. The logo still loads from codapet.com.
+// CodaPet's brand watercolor illustrations (from the QOL Meta ad creatives),
+// self-hosted in public/images with their edges washed into the page color.
+// The logo still loads from codapet.com.
 export const ASSETS = {
   wordmark: "https://www.codapet.com/images/codapet-new-logo-wordmark.svg",
   icon: "https://www.codapet.com/images/codapet-icon.svg",
