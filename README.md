@@ -14,16 +14,16 @@ The follow-up email copy is in [`docs/email-sequence.md`](docs/email-sequence.md
 | # | Step | Purpose |
 |---|---|---|
 | 1 | `intro` | One promise, one button. Fires Pixel `ViewContent`. |
-| 2 | `reason` | Easy first tap; picks lesson 1. |
-| 3 | `info1` | Lesson matched to their reason. |
-| 4 | `duration` | Shapes tips on the loading screen + emails. |
-| 5 | `noticed` | Multi-select everyday signs → mapped to the 7 QOL areas. |
-| 6 | `areas` | Their picks light up the matching areas ("You noticed"). |
-| 7 | `feeling` | Sets tone of lesson 2 and emails. |
-| 8 | `info2` | Reassurance from our vets. |
-| 9 | `loading` | "Building your summary"; auto-advances. |
-| 10 | `email` | Email capture in exchange for the summary. Fires Pixel `Lead`. |
-| 11 | `done` | Sells the check, then links to it. Fires `StartQOLCheck`. |
+| 2 | `reason` | Easy first tap; picks the lesson shown on the areas screen. |
+| 3 | `noticed` | Multi-select everyday signs → mapped to the 7 QOL areas. |
+| 4 | `areas` | Lesson for their reason + their picks lit up across the 7 areas. |
+| 5 | `loading` | "Building your summary" (~1.5s); auto-advances. |
+| 6 | `email` | Email capture in exchange for the summary. Fires Pixel `Lead`. |
+| 7 | `done` | Sells the check, then links to it. Fires `StartQOLCheck`. |
+
+The "how long" and "how are you feeling" questions were cut to shorten the flow. Their fields
+(`duration`, `feeling`, and the Reply fields `qol_duration`, `qol_duration_text`, `qol_feeling`) are
+still accepted but now arrive empty.
 
 All copy and branching lives in [`src/lib/funnel.ts`](src/lib/funnel.ts), so it's one file to review.
 

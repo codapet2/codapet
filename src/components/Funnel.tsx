@@ -80,6 +80,7 @@ export default function Funnel() {
   const firstRender = useRef(true);
 
   const hits = useMemo(() => focusAreas(answers.noticed), [answers.noticed]);
+  const lesson = lessonFor(answers);
 
   const stepRef = useRef(step);
   stepRef.current = step;
@@ -159,17 +160,17 @@ export default function Funnel() {
   // Preload lesson images so they don't pop in.
   useEffect(() => {
     if (!hydrated) return;
-    [ASSETS.lesson1, ASSETS.lesson2, ASSETS.checklist].forEach((src) => {
+    [ASSETS.lesson1, ASSETS.checklist].forEach((src) => {
       const img = new Image();
       img.src = src;
     });
   }, [hydrated]);
 
-  // Loading screen: ~2.3s fill, then a 500ms pause, then on to email.
+  // Loading screen: ~1.5s fill, then a 500ms pause, then on to email.
   useEffect(() => {
     if (step !== "loading") return;
     setProgress(0);
-    const timer = setInterval(() => setProgress((p) => Math.min(100, p + 4)), 90);
+    const timer = setInterval(() => setProgress((p) => Math.min(100, p + 6)), 90);
     return () => clearInterval(timer);
   }, [step]);
 
@@ -179,7 +180,7 @@ export default function Funnel() {
     return () => clearTimeout(t);
   }, [step, progress, go]);
 
-  const pickSingle = <K extends "reason" | "duration" | "feeling">(key: K, value: Answers[K]) => {
+  const pickSingle = <K extends "reason">(key: K, value: Answers[K]) => {
     setAnswers((a) => ({ ...a, [key]: value }));
     if (advanceTimer.current) clearTimeout(advanceTimer.current);
     advanceTimer.current = setTimeout(next, 280);
@@ -300,7 +301,7 @@ export default function Funnel() {
           </div>
         )}
 
-        {(step === "reason" || step === "duration" || step === "feeling") && (
+        {step === "reason" && (
           <Screen>
             <Heading headingRef={headingRef} title={QUESTIONS[step].title} sub={QUESTIONS[step].sub} />
             <div className="flex flex-col gap-2.5">
@@ -308,8 +309,8 @@ export default function Funnel() {
                 <OptionButton
                   key={o.value}
                   label={o.label}
-                  selected={answers[step] === o.value}
-                  onClick={() => pickSingle(step, o.value as never)}
+                  selected={answers.reason === o.value}
+                  onClick={() => pickSingle("reason", o.value)}
                 />
               ))}
             </div>
@@ -336,37 +337,15 @@ export default function Funnel() {
           </Screen>
         )}
 
-        {(step === "info1" || step === "info2") && (() => {
-          const l = lessonFor(step, answers);
-          return (
-            <Screen gap="gap-5">
-              <div
-                className="h-[260px] bg-page bg-contain bg-center bg-no-repeat"
-                style={{ backgroundImage: `url('${l.image}')` }}
-                role="img"
-                aria-label={step === "info1" ? "Watercolor of a woman sitting with her dog at home" : "Watercolor of a veterinarian arriving at a family's front door"}
-              />
-              <div className="flex flex-col gap-2.5 px-1">
-                <Eyebrow>{l.kicker}</Eyebrow>
-                <h2 ref={headingRef} tabIndex={-1} className="font-serif text-[27px] leading-[1.2] font-medium text-pretty outline-none">
-                  {l.title}
-                </h2>
-                <p className="text-base leading-[1.55] text-body text-pretty">{l.body}</p>
-              </div>
-              <PrimaryButton onClick={next} className="mt-auto">Continue</PrimaryButton>
-            </Screen>
-          );
-        })()}
-
         {step === "areas" && (
           <Screen gap="gap-[18px]">
             <div className="flex flex-col gap-2 px-1">
-              <Eyebrow>What vets look at</Eyebrow>
+              <Eyebrow>{lesson.kicker}</Eyebrow>
               <h2 ref={headingRef} tabIndex={-1} className="font-serif text-[26px] leading-[1.2] font-medium text-pretty outline-none">
                 {areasTitle(hits)}
               </h2>
               <p className="text-[15px] leading-[1.45] text-muted text-pretty">
-                Vets look at 7 everyday areas. That way no single bad day decides the picture.
+                {lesson.title} Vets look at 7 everyday areas, so no single bad day decides the picture.
               </p>
             </div>
             <ul className="rounded-[18px] border border-line bg-white px-4 py-1">
@@ -400,7 +379,7 @@ export default function Funnel() {
               <div className="h-2 rounded bg-primary" style={{ width: `${progress}%` }} />
             </div>
             <ul className="flex flex-col gap-3.5">
-              {loadingItems(answers.duration).map((it) => {
+              {loadingItems().map((it) => {
                 const done = progress >= it.at;
                 return (
                   <li key={it.t} className={`flex items-center gap-3 text-[15px] font-semibold transition-colors ${done ? "text-ink" : "text-disabled"}`}>
@@ -417,6 +396,8 @@ export default function Funnel() {
 
         {step === "email" && (
           <Screen gap="gap-[18px]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={ASSETS.lesson1} alt="" width={1000} height={956} className="mx-auto -mb-1 h-[150px] w-auto" />
             <div className="flex flex-col gap-2 px-1">
               <span className="text-[13px] font-bold text-success">✓ Your summary is ready</span>
               <h2 ref={headingRef} tabIndex={-1} className="font-serif text-[27px] leading-[1.2] font-medium text-pretty outline-none">

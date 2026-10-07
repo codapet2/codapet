@@ -9,8 +9,7 @@ Variables come from the Reply custom fields that `/api/lead` sets:
 |---|---|
 | `{{qol_focus_areas}}` | `Mobility, Happiness` (or `All 7 areas`) |
 | `{{qol_area_tips}}` | One "What to watch / One thing to try" block per area (plain text, see `AREA_TIPS` in `src/lib/funnel.ts`) |
-| `{{qol_duration_text}}` | `the past few weeks` |
-| `{{qol_reason}}`, `{{qol_feeling}}` | Raw answers, for routing or conditional snippets |
+| `{{qol_reason}}` | Why they came (`changes`, `diagnosis`, `older`, `prepared`), for routing or conditional snippets |
 | `{{lead_id}}` | Lead row id in Supabase |
 
 Every link to the check should be

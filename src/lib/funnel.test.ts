@@ -51,9 +51,8 @@ describe("copy", () => {
     expect(summaryRows(["Hunger", "Hurt"])[0].t).toBe("Areas to watch: Hunger, Hurt");
   });
   it("picks lessons by answer", () => {
-    expect(lessonFor("info1", { ...EMPTY_ANSWERS, reason: "older" }).kicker).toBe("About aging");
-    expect(lessonFor("info2", { ...EMPTY_ANSWERS, feeling: "calm" }).title).toBe("A great place to start from.");
-    expect(lessonFor("info2", EMPTY_ANSWERS).kicker).toBe("From our vets");
+    expect(lessonFor({ reason: "older" }).kicker).toBe("About aging");
+    expect(lessonFor({ reason: null }).kicker).toBe("Trust that feeling");
   });
   it("personalizes why-now and reassurance", () => {
     expect(whyNow({ reason: "changes", duration: "months" })).toMatch(/for months/);
@@ -69,17 +68,16 @@ describe("copy", () => {
 });
 
 describe("steps", () => {
-  it("progress runs 0..100 over 11 steps", () => {
+  it("progress runs 0..100 over 7 steps", () => {
     expect(progressPct("intro")).toBe(0);
-    expect(progressPct("reason")).toBe(10);
+    expect(progressPct("noticed")).toBe(33);
     expect(progressPct("done")).toBe(100);
   });
   it("won't skip past missing answers", () => {
     expect(clampStep("email", EMPTY_ANSWERS)).toBe("reason");
-    expect(clampStep("info1", { ...EMPTY_ANSWERS, reason: "changes" })).toBe("info1");
-    expect(clampStep("areas", { ...EMPTY_ANSWERS, reason: "changes", duration: "weeks" })).toBe("noticed");
-    const full = { reason: "changes", duration: "weeks", noticed: ["eat"], feeling: "calm" } as const;
-    expect(clampStep("done", { ...full, noticed: ["eat"] })).toBe("done");
+    expect(clampStep("noticed", { ...EMPTY_ANSWERS, reason: "changes" })).toBe("noticed");
+    expect(clampStep("areas", { ...EMPTY_ANSWERS, reason: "changes" })).toBe("noticed");
+    expect(clampStep("done", { ...EMPTY_ANSWERS, reason: "changes", noticed: ["eat"] })).toBe("done");
     expect(clampStep("intro", EMPTY_ANSWERS)).toBe("intro");
   });
 });

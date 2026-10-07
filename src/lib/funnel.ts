@@ -1,19 +1,10 @@
 // All funnel copy, branching and derived values live here so vets/marketing
 // can review one file. Mirrors the logic class in docs/design-handoff.
 
-export const STEPS = [
-  "intro",
-  "reason",
-  "info1",
-  "duration",
-  "noticed",
-  "areas",
-  "feeling",
-  "info2",
-  "loading",
-  "email",
-  "done",
-] as const;
+// Kept short on purpose: two taps of questions, one personalized lesson, then
+// the email ask. duration/feeling are no longer asked; they stay in Answers
+// (always null) so stored leads and the Reply fields keep the same shape.
+export const STEPS = ["intro", "reason", "noticed", "areas", "loading", "email", "done"] as const;
 export type Step = (typeof STEPS)[number];
 
 export type Reason = "changes" | "diagnosis" | "older" | "prepared";
@@ -51,7 +42,6 @@ export const ASSETS = {
   icon: "https://www.codapet.com/images/codapet-icon.svg",
   welcome: "/images/welcome.webp",
   lesson1: "/images/lesson1.webp",
-  lesson2: "/images/lesson2.webp",
   checklist: "/images/checklist.webp",
 };
 
@@ -100,14 +90,12 @@ export const AREAS: { name: Area; desc: string }[] = [
 
 export const QUESTIONS = {
   reason: { title: "What brings you here today?", sub: "Pick the one that fits best.", options: REASON_OPTIONS },
-  duration: { title: "How long has this been on your mind?", sub: "There’s no right answer.", options: DURATION_OPTIONS },
   noticed: { title: "Have you noticed any of these?", sub: "Select all that apply.", options: NOTICED_OPTIONS },
-  feeling: { title: "How are you feeling about it?", sub: "It helps us choose what to send you.", options: FEELING_OPTIONS },
 } as const;
 
-export type Lesson = { kicker: string; title: string; body: string; image: string };
+export type Lesson = { kicker: string; title: string; body: string };
 
-const INFO1: Record<Reason, Omit<Lesson, "image">> = {
+const INFO1: Record<Reason, Lesson> = {
   changes: {
     kicker: "Trust that feeling",
     title: "You know your pet better than anyone.",
@@ -130,28 +118,9 @@ const INFO1: Record<Reason, Omit<Lesson, "image">> = {
   },
 };
 
-const INFO2: Record<Feeling, Omit<Lesson, "image" | "kicker">> = {
-  worried: {
-    title: "Worry means you’re paying attention.",
-    body: "You don’t need all the answers today. Looking at one area at a time makes things clearer and less heavy.",
-  },
-  overwhelmed: {
-    title: "Let’s make it smaller.",
-    body: "One question, one area, one week at a time. That’s all the check asks of you.",
-  },
-  unsure: {
-    title: "Knowing what’s normal is hard.",
-    body: "The check puts what you see next to what vets look for, so it’s easier to tell ordinary aging from something more.",
-  },
-  calm: {
-    title: "A great place to start from.",
-    body: "Checking in while you feel steady gives you a clear record to compare with later.",
-  },
-};
-
-export function lessonFor(step: "info1" | "info2", a: Answers): Lesson {
-  if (step === "info1") return { ...INFO1[a.reason ?? "changes"], image: ASSETS.lesson1 };
-  return { kicker: "From our vets", ...INFO2[a.feeling ?? "worried"], image: ASSETS.lesson2 };
+/** The lesson matched to why they came, shown at the top of the 7-areas screen. */
+export function lessonFor(a: Pick<Answers, "reason">): Lesson {
+  return INFO1[a.reason ?? "changes"];
 }
 
 const DURATION_TEXT: Record<Duration, string> = {
@@ -249,10 +218,10 @@ export function summaryRows(hits: Area[]) {
   ];
 }
 
-export function loadingItems(d: Duration | null) {
+export function loadingItems() {
   return [
     { t: "Matching your answers to the 7 areas", at: 30 },
-    { t: `Choosing tips for ${durationText(d)}`, at: 65 },
+    { t: "Choosing tips from CodaPet vets", at: 65 },
     { t: "Preparing your summary", at: 95 },
   ];
 }
@@ -273,9 +242,7 @@ export function isStep(s: unknown): s is Step {
  */
 export function maxReachableStep(a: Answers): Step {
   if (!a.reason) return "reason";
-  if (!a.duration) return "duration";
   if (!a.noticed.length) return "noticed";
-  if (!a.feeling) return "feeling";
   return "done";
 }
 
