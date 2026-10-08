@@ -6,6 +6,9 @@ health-app onboarding flows (Noom-style weight-loss and e-health signup funnels)
 a short lesson after each answer, a personalized summary, then the email ask and a strong hand-off to the
 full QOL check.
 
+> **Deploying today?** [`site/`](site/README.md) is a plain HTML/CSS/JS version of this funnel with no
+> build step or server. Upload that folder to any static host and send leads to a Zapier/Make webhook.
+
 The design handoff (spec, clickable prototype) is in [`docs/design-handoff/`](docs/design-handoff/README.md).
 The follow-up email copy is in [`docs/email-sequence.md`](docs/email-sequence.md).
 
